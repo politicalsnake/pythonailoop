@@ -5,6 +5,7 @@ import subprocess
 from google.genai import types
 
 the = True
+go = True
 while the == True:
     client = genai.Client(api_key="AIzaSyAUiqd8mnnguM_opAUE1r-YcC1_nwtJ-As")
     print("Enter input:")
@@ -19,20 +20,31 @@ while the == True:
     code = response.text
     code = code.replace("```python","")
     code = code.replace("```","")
+    print("THE CODE")
+    print("")
+    print(code)
     with open("script.py","w") as f:
         f.write(code)
     res = subprocess.run(['python','script.py'], capture_output = True, text = True)
     coderevis = client.models.generate_content(model = "gemini-2.0-flash",
                                          contents = ("Your last input was",query,"WRITE ONLY THE PROGRAM IN PYTHON. WRITE NOTHING ELSE. The output of the code you wrote for this query was",res.stdout,"Is this acceptable? If acceptable, type yes and nothing else. If unnaceptable, type revised code."), 
                                          config = types.GenerateContentConfig(temperature = 0))
-    print("THE OUTPUT")
-    print("")
-    print(res.stdout)
-    print("THE CODE")
-    print("")
-    print(code)
-    print("CODE RESPONSE")
-    print("")
-    print(coderevis.text)
-    the = False
+    while go == True:
+        if coderevis.text == "yes":
+            print("Out:")
+            print(res.stdout)
+            print("Final response:")
+            print("")
+            print(coderevis.text)
+            print("program completed.")
+            the = False
+            go = False
+        else:
+            with open("script.py","w") as f:
+                f.write(coderevis.text)
+            res = subprocess.run(['python','script.py'], capture_output = True, text = True)
+            coderevis = client.models.generate_content(model = "gemini-2.0-flash",
+                                         contents = ("The function the code to write should be:",query, "The output of the code you wrote for this query was",res.stdout,"Is this acceptable? If acceptable, type yes and nothing else. If unnaceptable, type revised code."), 
+                                         config = types.GenerateContentConfig(temperature = 0))
+    
     
