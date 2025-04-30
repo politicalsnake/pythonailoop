@@ -7,7 +7,7 @@ from google.genai import types
 the = True
 go = True
 while the == True:
-    client = genai.Client(api_key="AIzaSyAUiqd8mnnguM_opAUE1r-YcC1_nwtJ-As")
+    client = genai.Client(api_key="")
     print("Enter input:")
     query = input()
     print("Your input was: ",query," would you like to revise?")
