@@ -20,7 +20,7 @@ while the == True:
     code = response.text
     code = code.replace("```python","")
     code = code.replace("```","")
-    print("THE CODE")
+    print("Initial program:")
     print("")
     print(code)
     with open("script.py","w") as f:
