@@ -6,6 +6,8 @@ from google.genai import types
 
 the = True
 go = True
+ct = 0
+
 while the == True:
     client = genai.Client(api_key="AIzaSyAUiqd8mnnguM_opAUE1r-YcC1_nwtJ-As")
     print("Enter input:")
@@ -30,7 +32,11 @@ while the == True:
                                          contents = ("Your last input was",query,"WRITE ONLY THE PROGRAM IN PYTHON. WRITE NOTHING ELSE. The output of the code you wrote for this query was",res.stdout,"Is this acceptable? If acceptable, type yes and nothing else. If unnaceptable, type revised code."), 
                                          config = types.GenerateContentConfig(temperature = 0))
     while go == True:
-        if coderevis.text == "yes":
+        ct = ct + 1
+        if ct == 15:
+            go == False
+        print(ct)
+        if "yes" in coderevis.text:
             print("Out:")
             print(res.stdout)
             print("Final response:")
@@ -44,7 +50,8 @@ while the == True:
                 f.write(coderevis.text)
             res = subprocess.run(['python','script.py'], capture_output = True, text = True)
             coderevis = client.models.generate_content(model = "gemini-2.0-flash",
-                                         contents = ("The function the code to write should be:",query, "The output of the code you wrote for this query was",res.stdout,"Is this acceptable? If acceptable, type yes and nothing else. If unnaceptable, type revised code."), 
+                                         contents = ("The function the code to write should be:",query, "The output of the code written for this function was",res.stdout,"Is this acceptable? If acceptable, type yes and nothing else. If unnaceptable, type revised code."), 
                                          config = types.GenerateContentConfig(temperature = 0))
+            print(coderevis.text)
     
     
