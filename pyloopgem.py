@@ -34,7 +34,7 @@ while the == True:
     while go == True:
         ct = ct + 1
         if ct == 15:
-            go == False
+            break
         print(ct)
         if "yes" in coderevis.text:
             print("Out:")
