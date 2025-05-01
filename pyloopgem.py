@@ -9,7 +9,7 @@ go = True
 ct = 0
 
 while the == True:
-    client = genai.Client(api_key="AIzaSyAUiqd8mnnguM_opAUE1r-YcC1_nwtJ-As")
+    client = genai.Client(api_key="")
     print("Enter input:")
     query = input()
     print("Your input was: ",query," would you like to revise?")
@@ -22,7 +22,7 @@ while the == True:
     code = response.text
     code = code.replace("```python","")
     code = code.replace("```","")
-    print("THE CODE")
+    print("Initial program:")
     print("")
     print(code)
     with open("script.py","w") as f:
