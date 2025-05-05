@@ -8,6 +8,7 @@ the = True
 go = True
 ct = 0
 cd = "yolo"
+td = "yele"
 
 while the == True:
     client = genai.Client(api_key="AIzaSyAUiqd8mnnguM_opAUE1r-YcC1_nwtJ-As")
@@ -51,10 +52,14 @@ while the == True:
             coderevis = client.models.generate_content(model = "gemini-2.0-flash",
                                          contents = ("The function the code to write should be:",query,"the code is:",cd,"The output of the code was",res.stdout,"Is this acceptable? If acceptable, type yes and nothing else. If unnaceptable, type revised code."),
                                          config = types.GenerateContentConfig(temperature = 1))
-            cd = coderevis.text
+            if "yes" in coderevis.text:
+                td = coderevis.text
+            else:
+                cd = coderevis.text
+                td = coderevis.text
             print(cd)
             print(res.stdout)
-        if "yes" in cd:
+        if "yes" in td:
             if ct == 1:
                 with open("script.py","w") as f:
                      f.write(thecode)
