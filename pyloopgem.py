@@ -36,46 +36,51 @@ while the == True:
                                          config = types.GenerateContentConfig(temperature = 0))
     while go == True:
         cd = coderevis.text
+        print(cd)
+        print(coderevis.text)
         ct = ct + 1
         if ct == 15:
+            print("eee")
             break
         print(ct)
         if "yes" not in cd:
+            print("eeee")
             with open("script.py","w") as f:
                 f.write(coderevis.text)
             res = subprocess.run(['python','script.py'], capture_output = True, text = True)
             coderevis = client.models.generate_content(model = "gemini-2.0-flash",
                                          contents = ("The function the code to write should be:",query,"the code is:",cd,"The output of the code was",res.stdout,"Is this acceptable? If acceptable, type yes and nothing else. If unnaceptable, type revised code."),
                                          config = types.GenerateContentConfig(temperature = 1))
-            td = coderevis.text
-            print(td)
+            cd = coderevis.text
+            print(cd)
             print(res.stdout)
-            if "yes" in td:
-                the = False
+        if "yes" in cd:
+            if ct == 1:
+                with open("script.py","w") as f:
+                     f.write(thecode)
+                res = subprocess.run(['python','script.py'], capture_output = True, text = True)
+                print("final output:")
+                print(res.stdout)
+                print("final code:")
+                print(thecode)
+            elif ct > 1:
+                print("final code:")
+                print(cd)
+                print("final output:")
+                print(res.stdout)
                 go = False
-                if ct == 1:
-                    with open("script.py","w") as f:
-                         f.write(thecode)
-                    res = subprocess.run(['python','script.py'], capture_output = True, text = True)
-                    print("final output:")
-                    print(res.stdout)
-                    print("final code:")
-                    print(thecode)
-                elif ct > 1:
-                    print("final code:")
-                    print(cd)
-                    print("final output:")
-                    print(res.stdout)
+                the = False
                 break
-            ny = input()
-            print("Interrupt revision process and send message to Gemini?")
-            if ny == "yes":
-                cd = coderevis.text
-                print("please say only what is wrong with the code.")
-                rev = input()
-                coderevis = client.models.generate_content(model = "gemini-2.0-flash",
-                                         contents = ("I wrote this program:",cd,"It is buggy. The output is.",res.stdout, "Please revise with this advice:",rev),
-                                         config = types.GenerateContentConfig(temperature = 1))
-                ct = ct + 1
+        print("Interrupt revision process and send message to Gemini?")
+        ny = input()
+        if ny == "yes":
+            cd = coderevis.text
+            print("please say only what is wrong with the code.")
+            rev = input()
+            coderevis = client.models.generate_content(model = "gemini-2.0-flash",
+                                     contents = ("I wrote this program:",cd,"It is buggy. The output is.",res.stdout, "Please revise with this advice:",rev),
+                                     config = types.GenerateContentConfig(temperature = 1))
+            print("uhu")
+            ct = ct + 1
     
     
