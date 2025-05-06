@@ -39,7 +39,6 @@ while the == True:
         cd = coderevis.text
         td = coderevis.text
         print(cd)
-        print(coderevis.text)
         ct = ct + 1
         if ct == 15:
             print("eee")
