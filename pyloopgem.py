@@ -15,7 +15,7 @@ while the == True:
     cd = "yolo"
     td = "yele"
     gg = 0
-    client = genai.Client(api_key="AIzaSyAUiqd8mnnguM_opAUE1r-YcC1_nwtJ-As")
+    client = genai.Client(api_key="")
     print("Enter input:")
     query = input()
     print("Your input was: ",query," would you like to revise?")
