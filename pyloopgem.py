@@ -11,7 +11,7 @@ cd = "yolo"
 td = "yele"
 
 while the == True:
-    client = genai.Client(api_key="")
+    client = genai.Client(api_key="AIzaSyAUiqd8mnnguM_opAUE1r-YcC1_nwtJ-As")
     print("Enter input:")
     query = input()
     print("Your input was: ",query," would you like to revise?")
@@ -41,11 +41,9 @@ while the == True:
         print(cd)
         ct = ct + 1
         if ct == 15:
-            print("eee")
             break
         print(ct)
         if "yes" not in cd:
-            print("eeee")
             with open("script.py","w") as f:
                 f.write(coderevis.text)
             res = subprocess.run(['python','script.py'], capture_output = True, text = True)
@@ -90,7 +88,6 @@ while the == True:
             coderevis = client.models.generate_content(model = "gemini-2.0-flash",
                                      contents = ("I wrote this program:",cd,"It is buggy. The output is.",res.stdout, "Please revise with this advice:",rev),
                                      config = types.GenerateContentConfig(temperature = 1))
-            print("uhu")
             ct = ct + 1
     
     

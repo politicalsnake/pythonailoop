@@ -1,17 +1,18 @@
 
-def sort_numbers(numbers):
-  """Sorts a list of numbers from lowest to highest.
+def print_e():
+  """Prints the letter 'e' using asterisks."""
 
-  Args:
-    numbers: A list of numbers to be sorted.
+  e_pattern = [
+      "*****",
+      "*    ",
+      "*****",
+      "*    ",
+      "*****",
+  ]
 
-  Returns:
-    A new list containing the numbers sorted from lowest to highest.
-  """
-  return sorted(numbers)
+  for row in e_pattern:
+    print(row)
 
-if __name__ == '__main__':
-  numbers = [5, 2, 8, 1, 9, 4]
-  sorted_numbers = sort_numbers(numbers)
-  print(sorted_numbers)
+if __name__ == "__main__":
+  print_e()
 
