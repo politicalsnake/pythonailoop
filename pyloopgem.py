@@ -37,6 +37,7 @@ while the == True:
                                          config = types.GenerateContentConfig(temperature = 0))
     while go == True:
         cd = coderevis.text
+        td = coderevis.text
         print(cd)
         print(coderevis.text)
         ct = ct + 1
@@ -57,7 +58,9 @@ while the == True:
             else:
                 cd = coderevis.text
                 td = coderevis.text
-            print(cd)
+            td = coderevis.text
+            print(td,"t")
+            print(cd,"c")
             print(res.stdout)
         if "yes" in td:
             if ct == 1:
@@ -68,6 +71,9 @@ while the == True:
                 print(res.stdout)
                 print("final code:")
                 print(thecode)
+                go = False
+                the = False
+                break
             elif ct > 1:
                 print("final code:")
                 print(cd)
