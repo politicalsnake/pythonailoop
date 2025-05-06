@@ -9,8 +9,12 @@ go = True
 ct = 0
 cd = "yolo"
 td = "yele"
+gg = 0
 
 while the == True:
+    cd = "yolo"
+    td = "yele"
+    gg = 0
     client = genai.Client(api_key="AIzaSyAUiqd8mnnguM_opAUE1r-YcC1_nwtJ-As")
     print("Enter input:")
     query = input()
@@ -21,6 +25,7 @@ while the == True:
     response = client.models.generate_content(model = "gemini-2.0-flash",
                                               contents = (query,"WRITE ONLY THE PROGRAM IN PYTHON. WRITE NOTHING ELSE."), 
                                               config = types.GenerateContentConfig(temperature = 0))
+    ct = ct + 1
     code = response.text
     code = code.replace("```python","")
     code = code.replace("```","")
@@ -35,14 +40,19 @@ while the == True:
     coderevis = client.models.generate_content(model = "gemini-2.0-flash",
                                          contents = ("Your last input was",query,"WRITE ONLY THE PROGRAM IN PYTHON. WRITE NOTHING ELSE. The output of the code you wrote for this query was",res.stdout,"Is this acceptable? If acceptable, type yes and nothing else. If unnaceptable, type revised code."), 
                                          config = types.GenerateContentConfig(temperature = 0))
+    ct = ct + 1
     while go == True:
+        gg = gg + 1
+        print("revision number:",gg)
+        print("tokens used:",ct)
         cd = coderevis.text
         td = coderevis.text
         print(cd)
-        ct = ct + 1
         if ct == 15:
+            go = False
+            the = False
+            print("You have run out of queries. Restart program for more.")
             break
-        print(ct)
         if "yes" not in cd:
             with open("script.py","w") as f:
                 f.write(coderevis.text)
@@ -50,17 +60,18 @@ while the == True:
             coderevis = client.models.generate_content(model = "gemini-2.0-flash",
                                          contents = ("The function the code to write should be:",query,"the code is:",cd,"The output of the code was",res.stdout,"Is this acceptable? If acceptable, type yes and nothing else. If unnaceptable, type revised code."),
                                          config = types.GenerateContentConfig(temperature = 1))
+            ct = ct + 1
             if "yes" in coderevis.text:
                 td = coderevis.text
             else:
                 cd = coderevis.text
                 td = coderevis.text
             td = coderevis.text
-            print(td,"t")
-            print(cd,"c")
+            print("Revised code or yes, it works:",td)
+            print("Revised code or original:",cd)
             print(res.stdout)
         if "yes" in td:
-            if ct == 1:
+            if ct == 3:
                 with open("script.py","w") as f:
                      f.write(thecode)
                 res = subprocess.run(['python','script.py'], capture_output = True, text = True)
@@ -68,16 +79,32 @@ while the == True:
                 print(res.stdout)
                 print("final code:")
                 print(thecode)
-                go = False
-                the = False
+                if ct < 12:
+                    print("Query count:",ct)
+                    print("You have enough tokens. Code starting over.")
+                    break
+                elif ct > 12:
+                    print("Query count:",ct)
+                    print("You do not have enough tokens. Code ending.")
+                    go = False
+                    the = False
+                    break
                 break
-            elif ct > 1:
+            elif ct > 3:
                 print("final code:")
                 print(cd)
                 print("final output:")
                 print(res.stdout)
-                go = False
-                the = False
+                if ct < 12:
+                    print("Query count:",ct)
+                    print("You have enough tokens. Code starting over.")
+                    break
+                elif ct > 12:
+                    print("Query count:",ct)
+                    print("You do not have enough tokens. Code ending.")
+                    go = False
+                    the = False
+                    break
                 break
         print("Interrupt revision process and send message to Gemini?")
         ny = input()
@@ -90,4 +117,5 @@ while the == True:
                                      config = types.GenerateContentConfig(temperature = 1))
             ct = ct + 1
     
+
     
