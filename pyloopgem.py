@@ -17,6 +17,7 @@ while the == True:
     cd = "yolo"
     td = "yele"
     gg = 0
+    tg = 0
     client = genai.Client(api_key=key)
     print("Enter input:")
     query = input()
@@ -45,6 +46,7 @@ while the == True:
     ct = ct + 1
     while go == True:
         gg = gg + 1
+        tg = tg + 1
         print("revision number:",gg)
         print("tokens used:",ct)
         cd = coderevis.text
@@ -55,7 +57,24 @@ while the == True:
             the = False
             print("You have run out of queries. Restart program for more.")
             break
-        if "yes" not in cd:
+        if "yes" not in cd and gg == 1:
+            with open("script.py","w") as f:
+                f.write(thecode)
+            res = subprocess.run(['python','script.py'], capture_output = True, text = True)
+            coderevis = client.models.generate_content(model = "gemini-2.0-flash",
+                                         contents = ("The function the code to write should be:",query,"the code is:",cd,"The output of the code was",res.stdout,"Is this acceptable? If acceptable, type yes and nothing else. If unnaceptable, type revised code."),
+                                         config = types.GenerateContentConfig(temperature = 1))
+            ct = ct + 1
+            if "yes" in coderevis.text:
+                td = coderevis.text
+            else:
+                cd = coderevis.text
+                td = coderevis.text
+            td = coderevis.text
+            print("Revised code or yes, it works:",td)
+            print("Revised code or original:",cd)
+            print("Out:",res.stdout)
+        if "yes" not in cd and gg > 1:
             with open("script.py","w") as f:
                 f.write(coderevis.text)
             res = subprocess.run(['python','script.py'], capture_output = True, text = True)
@@ -71,9 +90,9 @@ while the == True:
             td = coderevis.text
             print("Revised code or yes, it works:",td)
             print("Revised code or original:",cd)
-            print(res.stdout)
+            print("Out:",res.stdout)
         if "yes" in td:
-            if gg == 1:
+            if tg == 1:
                 print("countfirst")
                 with open("script.py","w") as f:
                      f.write(thecode)
@@ -93,7 +112,7 @@ while the == True:
                     the = False
                     break
                 break
-            elif gg > 1:
+            elif tg > 1:
                 print("countafter")
                 print("final code:")
                 print(cd)
