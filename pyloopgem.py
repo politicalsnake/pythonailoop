@@ -10,12 +10,14 @@ ct = 0
 cd = "yolo"
 td = "yele"
 gg = 0
+print("Enter gemini API key:")
+key = input()
 
 while the == True:
     cd = "yolo"
     td = "yele"
     gg = 0
-    client = genai.Client(api_key="AIzaSyAUiqd8mnnguM_opAUE1r-YcC1_nwtJ-As")
+    client = genai.Client(api_key=key)
     print("Enter input:")
     query = input()
     print("Your input was: ",query," would you like to revise?")
@@ -71,7 +73,8 @@ while the == True:
             print("Revised code or original:",cd)
             print(res.stdout)
         if "yes" in td:
-            if ct == 3:
+            if gg == 1:
+                print("countfirst")
                 with open("script.py","w") as f:
                      f.write(thecode)
                 res = subprocess.run(['python','script.py'], capture_output = True, text = True)
@@ -90,7 +93,8 @@ while the == True:
                     the = False
                     break
                 break
-            elif ct > 3:
+            elif gg > 1:
+                print("countafter")
                 print("final code:")
                 print(cd)
                 print("final output:")
@@ -116,6 +120,3 @@ while the == True:
                                      contents = ("I wrote this program:",cd,"It is buggy. The output is.",res.stdout, "Please revise with this advice:",rev),
                                      config = types.GenerateContentConfig(temperature = 1))
             ct = ct + 1
-    
-
-    
