@@ -12,6 +12,7 @@ td = "yele"
 gg = 0
 print("Enter gemini API key:")
 key = input()
+print("You need at least 3 tokens to work. You start with 15. If you run out, code will stop.")
 
 while the == True:
     cd = "yolo"
@@ -72,7 +73,6 @@ while the == True:
                 td = coderevis.text
             td = coderevis.text
             print("Revised code or yes, it works:",td)
-            print("Revised code or original:",cd)
             print("Out:",res.stdout)
         if "yes" not in cd and gg > 1:
             with open("script.py","w") as f:
@@ -94,12 +94,13 @@ while the == True:
         if "yes" in td:
             if tg == 1:
                 print("countfirst")
+                print(" ")
                 with open("script.py","w") as f:
                      f.write(thecode)
                 res = subprocess.run(['python','script.py'], capture_output = True, text = True)
-                print("final output:")
+                print("Final output:")
                 print(res.stdout)
-                print("final code:")
+                print("Final code:")
                 print(thecode)
                 if ct < 12:
                     print("Query count:",ct)
@@ -114,9 +115,10 @@ while the == True:
                 break
             elif tg > 1:
                 print("countafter")
-                print("final output:")
+                print(" ")
+                print("Final output:")
                 print(res.stdout)
-                print("final code:")
+                print("Final code:")
                 print(cd)
                 if ct < 12:
                     print("Query count:",ct)
