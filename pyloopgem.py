@@ -114,10 +114,10 @@ while the == True:
                 break
             elif tg > 1:
                 print("countafter")
-                print("final code:")
-                print(cd)
                 print("final output:")
                 print(res.stdout)
+                print("final code:")
+                print(cd)
                 if ct < 12:
                     print("Query count:",ct)
                     print("You have enough tokens. Code starting over.")
