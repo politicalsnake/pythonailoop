@@ -79,7 +79,7 @@ while the == True:
                 f.write(coderevis.text)
             res = subprocess.run(['python','script.py'], capture_output = True, text = True)
             coderevis = client.models.generate_content(model = "gemini-2.0-flash",
-                                         contents = ("The function the code to write should be:",query,"the code is:",cd,"The output of the code was",res.stdout,"Is this acceptable? If acceptable, type yes and nothing else. If unnaceptable, type revised code."),
+                                         contents = ("The function the code to write should be:",query,"the code is:",cd,"The output of the code was",res.stdout,"Is this acceptable? If acceptable, type yes and nothing else. If unnaceptable, type a revised script."),
                                          config = types.GenerateContentConfig(temperature = 1))
             ct = ct + 1
             if "yes" in coderevis.text:
